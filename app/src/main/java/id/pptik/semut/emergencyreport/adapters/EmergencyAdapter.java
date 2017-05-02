@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
+
 import java.util.ArrayList;
 
 import id.pptik.semut.emergencyreport.R;
@@ -40,6 +43,11 @@ public class EmergencyAdapter extends RecyclerView.Adapter<EmergencyAdapter.View
         tmp += "<br /><b>Tanggal : </b>"+emergency.getDate();
         holder.mTextDetail.setText(Html.fromHtml(tmp));
         if(emergency.getPhoneNumber() == null) holder.mButtonPhone.setVisibility(View.GONE);
+        holder.mImageProfile.setImageDrawable(new
+                IconicsDrawable(holder.mImageProfile.getContext())
+        .color(holder.mImageProfile.getResources().getColor(R.color.colorPrimaryDark))
+        .icon(GoogleMaterial.Icon.gmd_info_outline)
+        .sizeDp(50));
     }
 
     @Override

@@ -30,10 +30,11 @@ public class Profile {
     @Expose
     private String joindate;
 
-    @SerializedName("Poin")
+    @SerializedName("ID_role")
     @Expose
     private int idRole;
-    @SerializedName("ID_role")
+
+    @SerializedName("Poin")
     @Expose
     private int poin;
     @SerializedName("PoinLevel")

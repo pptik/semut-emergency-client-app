@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements ConnectionHandler
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimaryDark));
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
         mContext = this;
@@ -92,14 +93,14 @@ public class MainActivity extends AppCompatActivity implements ConnectionHandler
                 try {
                     JSONObject object = new JSONObject(pResult);
                     boolean success = (object.getBoolean("success"));
-                    if(success) createList(object.getJSONArray("dara"));
+                    if(success) createList(object.getJSONArray("data"));
                     else CommonAlerts.commonError(mContext, object.getString("message"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 break;
             case Constants.REST_ERROR:
-                CommonAlerts.commonError(mContext, Constants.REST_ERROR);
+                CommonAlerts.commonError(mContext, Constants.MESSAGE_HTTP_ERROR);
                 loadingIndicator.hide();
                 break;
         }

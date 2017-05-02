@@ -114,7 +114,30 @@ public class LoginActivity extends AppCompatActivity implements ConnectionHandle
             preferenceManager.save("{SessionID:" + sessionID + "}", Constants.PREF_SESSION_ID);
             preferenceManager.save(true, Constants.IS_LOGGED_IN);
             preferenceManager.apply();
-            toDashBoard();
+
+            new Request(context, (pResult, type) -> {
+                switch (type){
+                    case Constants.REST_UPDATE_PUSH_ID:
+                        loadingIndicator.dismiss();
+                        Log.i(TAG, pResult);
+                        try {
+                            JSONObject object = new JSONObject(pResult);
+                            boolean success = (object.getBoolean("success"));
+                            if(success) toDashBoard();
+                            else CommonAlerts.commonError(context, object.getString("message"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case Constants.REST_ERROR:
+                        loadingIndicator.dismiss();
+                        CommonAlerts.commonError(context, Constants.MESSAGE_HTTP_ERROR);
+
+                        break;
+                }
+            }).updatePushID(preferenceManager.getString(Constants.PREFS_PUSH_ID));
+
+
         }else {
             CommonAlerts.commonError(context, "Maaf, akun Anda tidak diizinkan untuk menggunakan aplikasi ini");
         }
@@ -122,8 +145,8 @@ public class LoginActivity extends AppCompatActivity implements ConnectionHandle
 
 
     private void toDashBoard(){
-       // Intent intent = new Intent(context, SplashScreenActivity.class);
-       // startActivity(intent);
+        Intent intent = new Intent(context, MainActivity.class);
+        startActivity(intent);
         finish();
     }
 
@@ -132,7 +155,7 @@ public class LoginActivity extends AppCompatActivity implements ConnectionHandle
     public void onSuccessRequest(String pResult, String type) {
         switch (type){
             case Constants.REST_USER_LOGIN:
-                loadingIndicator.hide();
+                loadingIndicator.dismiss();
                 Log.i(TAG, pResult);
                 try {
                     JSONObject object = new JSONObject(pResult);
@@ -144,8 +167,9 @@ public class LoginActivity extends AppCompatActivity implements ConnectionHandle
                 }
                 break;
             case Constants.REST_ERROR:
-                CommonAlerts.commonError(context, Constants.REST_ERROR);
-                loadingIndicator.hide();
+                loadingIndicator.dismiss();
+                CommonAlerts.commonError(context, Constants.MESSAGE_HTTP_ERROR);
+
                 break;
         }
     }

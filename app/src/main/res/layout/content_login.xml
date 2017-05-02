@@ -44,16 +44,7 @@
                     android:layout_width="match_parent"
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
-                    <com.facebook.login.widget.LoginButton
-                        android:visibility="gone"
-                        android:id="@+id/loginButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="15dp"
-                        android:paddingTop="15dp"
-                        android:paddingBottom="15dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp" />
+
                 </LinearLayout>
 
                 <LinearLayout
