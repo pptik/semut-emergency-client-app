@@ -21,7 +21,7 @@ import id.pptik.semut.emergencyreport.setup.Constants;
 import id.pptik.semut.emergencyreport.ui.CommonAlerts;
 
 
-public class DetailMapActivity extends AppCompatActivity {
+public class DetailMapActivity extends AppCompatActivity implements Marker.OnMarkerClickListener {
 
     @BindView(R.id.mapView)
     MapView mMap;
@@ -61,6 +61,12 @@ public class DetailMapActivity extends AppCompatActivity {
         Marker marker = new Marker(mMap);
         marker.setPosition(new GeoPoint(mEmergency.getLatitude(), mEmergency.getLongitude()));
         marker.setTitle(mEmergency.getName());
+        marker.setOnMarkerClickListener(this);
     }
 
+    @Override
+    public boolean onMarkerClick(Marker marker, MapView mapView) {
+
+        return false;
+    }
 }
