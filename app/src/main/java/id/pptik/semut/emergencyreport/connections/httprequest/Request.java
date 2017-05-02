@@ -114,13 +114,13 @@ public class Request extends ConnectionHandler {
 
 
 
-    public void getAllCctv(){
+    public void getAllEmergency(){
         Session session = new Gson().fromJson(preferenceManager.getString(Constants.PREF_SESSION_ID), Session.class);
         RequestParams params = new RequestParams();
         params.put("SessionID", session.getSessionID());
 
         Log.i(TAG, params.toString());
-        post(Constants.REST_GET_ALL_CCTV, params, new JsonHttpResponseHandler() {
+        post(Constants.REST_GET_ALL_EMERGENCY, params, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -131,7 +131,7 @@ public class Request extends ConnectionHandler {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 Log.i(TAG, "Success");
-                responseHandler.onSuccessRequest(response.toString(), Constants.REST_GET_ALL_CCTV);
+                responseHandler.onSuccessRequest(response.toString(), Constants.REST_GET_ALL_EMERGENCY);
             }
 
             @Override

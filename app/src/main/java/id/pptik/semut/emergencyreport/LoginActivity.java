@@ -72,6 +72,8 @@ public class LoginActivity extends AppCompatActivity implements ConnectionHandle
         context = this;
         preferenceManager = new PreferenceManager(context);
         loadingIndicator = new ProgressDialog(context);
+        loadingIndicator.setMessage("Memuat...");
+        loadingIndicator.setCancelable(false);
 
         if(preferenceManager.getBoolean(Constants.IS_LOGGED_IN)){
             toDashBoard();
