@@ -9,9 +9,13 @@ android {
         applicationId "id.pptik.emergencyreceiver"
         minSdkVersion 15
         targetSdkVersion 25
+        multiDexEnabled = true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    dexOptions {
+        javaMaxHeapSize "4g"
     }
     buildTypes {
         release {
@@ -46,6 +50,8 @@ dependencies {
     compile 'com.mikepenz:community-material-typeface:1.7.22.1@aar'
     compile 'com.mikepenz:fontawesome-typeface:4.7.0.0@aar'
     compile 'net.qiujuer.genius:ui:2.0.0-beta4'
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.github.MKergall:osmbonuspack:6.2'
 }
 
 apply plugin: 'com.google.gms.google-services'
