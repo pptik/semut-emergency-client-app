@@ -1,6 +1,7 @@
 package id.pptik.semut.emergencyreport.adapters;
 
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -10,13 +11,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.ArrayList;
 
+import id.pptik.semut.emergencyreport.DetailMapActivity;
 import id.pptik.semut.emergencyreport.R;
 import id.pptik.semut.emergencyreport.models.Emergency;
+import id.pptik.semut.emergencyreport.setup.Constants;
 
 public class EmergencyAdapter extends RecyclerView.Adapter<EmergencyAdapter.ViewHolder> {
 
@@ -48,6 +52,11 @@ public class EmergencyAdapter extends RecyclerView.Adapter<EmergencyAdapter.View
         .color(holder.mImageProfile.getResources().getColor(R.color.colorPrimaryDark))
         .icon(GoogleMaterial.Icon.gmd_info_outline)
         .sizeDp(50));
+        holder.mButtonMap.setOnClickListener(view -> {
+            Intent intent = new Intent(holder.mButtonMap.getContext(), DetailMapActivity.class);
+            intent.putExtra(Constants.INTENT_JSON_EMERGENCY, new Gson().toJson(emergency));
+            holder.mButtonMap.getContext().startActivity(intent);
+        });
     }
 
     @Override
@@ -66,6 +75,8 @@ public class EmergencyAdapter extends RecyclerView.Adapter<EmergencyAdapter.View
             mTextDetail = (TextView)v.findViewById(R.id.text_detail);
             mButtonPhone = (Button)v.findViewById(R.id.button_telepon);
             mButtonMap = (Button)v.findViewById(R.id.button_map);
+
+
         }
     }
 }
