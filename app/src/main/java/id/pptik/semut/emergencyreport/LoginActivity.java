@@ -136,6 +136,7 @@ public class LoginActivity extends AppCompatActivity implements ConnectionHandle
                         break;
                 }
             }).updatePushID(preferenceManager.getString(Constants.PREFS_PUSH_ID));
+            loadingIndicator.show();
 
 
         }else {
