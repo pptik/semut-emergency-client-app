@@ -29,7 +29,11 @@ public class Profile {
     @SerializedName("Joindate")
     @Expose
     private String joindate;
+
     @SerializedName("Poin")
+    @Expose
+    private int idRole;
+    @SerializedName("ID_role")
     @Expose
     private int poin;
     @SerializedName("PoinLevel")
@@ -50,6 +54,14 @@ public class Profile {
     @SerializedName("deposit")
     @Expose
     private Object deposit;
+
+    public int getIdRole() {
+        return idRole;
+    }
+
+    public void setIdRole(int idRole) {
+        this.idRole = idRole;
+    }
 
     public int getID() {
         return iD;

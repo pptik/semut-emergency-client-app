@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 
+import com.google.gson.Gson;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,7 +26,9 @@ import co.ceryle.radiorealbutton.library.RadioRealButtonGroup;
 import id.pptik.semut.emergencyreport.connections.httprequest.ConnectionHandler;
 import id.pptik.semut.emergencyreport.connections.httprequest.Request;
 import id.pptik.semut.emergencyreport.helpers.PreferenceManager;
+import id.pptik.semut.emergencyreport.models.Profile;
 import id.pptik.semut.emergencyreport.setup.Constants;
+import id.pptik.semut.emergencyreport.ui.CommonAlerts;
 
 
 public class LoginActivity extends AppCompatActivity implements ConnectionHandler.ResponHandler {
@@ -79,7 +83,7 @@ public class LoginActivity extends AppCompatActivity implements ConnectionHandle
             }else doLogin(emailEditText.getText().toString(), passEditText.getText().toString());
         });
 
-        signupBtn.setOnClickListener(v -> startActivity(new Intent(context, SignupActivity.class)));
+        signupBtn.setOnClickListener(v -> startActivity(new Intent(context, LoginActivity.class)));
         mLoginTypeGroup.setOnClickedButtonPosition(position -> {
             loginType = position;
             if(loginType == 0){
@@ -102,17 +106,22 @@ public class LoginActivity extends AppCompatActivity implements ConnectionHandle
 
 
     private void populateUserData(String profile, String sessionID){
-        preferenceManager.save(profile, Constants.PREF_PROFILE);
-        preferenceManager.save("{SessionID:"+sessionID+"}", Constants.PREF_SESSION_ID);
-        preferenceManager.save(true, Constants.IS_LOGGED_IN);
-        preferenceManager.apply();
-        toDashBoard();
+        Profile profileObj = new Gson().fromJson(profile, Profile.class);
+        if(profileObj.getIdRole() == 5) {
+            preferenceManager.save(profile, Constants.PREF_PROFILE);
+            preferenceManager.save("{SessionID:" + sessionID + "}", Constants.PREF_SESSION_ID);
+            preferenceManager.save(true, Constants.IS_LOGGED_IN);
+            preferenceManager.apply();
+            toDashBoard();
+        }else {
+            CommonAlerts.commonError(context, "Maaf, akun Anda tidak diizinkan untuk menggunakan aplikasi ini");
+        }
     }
 
 
     private void toDashBoard(){
-        Intent intent = new Intent(context, SplashScreenActivity.class);
-        startActivity(intent);
+       // Intent intent = new Intent(context, SplashScreenActivity.class);
+       // startActivity(intent);
         finish();
     }
 
@@ -127,12 +136,13 @@ public class LoginActivity extends AppCompatActivity implements ConnectionHandle
                     JSONObject object = new JSONObject(pResult);
                     boolean success = (object.getBoolean("success"));
                     if(success) populateUserData(object.getJSONObject("Profile").toString(), object.getString("SessionID"));
-                    else new ShowSnackbar(loginBtn).show(object.getString("message"));
+                    else Snackbar.make(loginBtn, object.getString("message"), Snackbar.LENGTH_LONG).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 break;
             case Constants.REST_ERROR:
+                CommonAlerts.commonError(context, Constants.REST_ERROR);
                 loadingIndicator.hide();
                 break;
         }
