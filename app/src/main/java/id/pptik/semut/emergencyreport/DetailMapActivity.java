@@ -7,9 +7,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.google.gson.Gson;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -44,6 +47,8 @@ public class DetailMapActivity extends AppCompatActivity implements Marker.OnMar
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_map);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+        toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimaryBold));
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
         mContext = this;
@@ -67,12 +72,21 @@ public class DetailMapActivity extends AppCompatActivity implements Marker.OnMar
         Marker marker = new Marker(mMap);
         marker.setPosition(new GeoPoint(mEmergency.getLatitude(), mEmergency.getLongitude()));
         marker.setTitle(mEmergency.getName());
+        marker.setIcon(
+                new IconicsDrawable(mContext)
+                .icon(GoogleMaterial.Icon.gmd_place)
+                .sizeDp(34)
+                .color(getResources().getColor(R.color.colorPrimaryDark))
+        );
         marker.setOnMarkerClickListener(this);
+        mMap.getOverlays().add(marker);
+        mMap.invalidate();
     }
 
     @Override
     public boolean onMarkerClick(Marker marker, MapView mapView) {
 
+        mDetailLayout.setVisibility(View.VISIBLE);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         EmergencyDetailFragment emergencyDetailFragment = new EmergencyDetailFragment();
